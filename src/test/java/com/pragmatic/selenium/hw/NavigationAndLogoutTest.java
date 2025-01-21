@@ -31,9 +31,7 @@ public class NavigationAndLogoutTest {
         webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
         webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
         webDriver.findElement(By.id("login-button")).click();
-
         Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
-
         //Open the Hamburger menu
         webDriver.findElement(By.id("react-burger-menu-btn")).click();
         Assert.assertTrue(webDriver.findElement(By.cssSelector("[class='bm-menu-wrap']")).isDisplayed(),
@@ -45,19 +43,15 @@ public class NavigationAndLogoutTest {
         webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
         webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
         webDriver.findElement(By.id("login-button")).click();
-
         Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         //Open the Hamburger menu
         webDriver.findElement(By.id("react-burger-menu-btn")).click();
         Assert.assertTrue(webDriver.findElement(By.cssSelector("[class='bm-menu-wrap']")).isDisplayed(),
                 "Menu option is not visible after clicking the hamburger menu.");
-
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(By.id("logout_sidebar_link")));
-
         //Select logout
         webDriver.findElement(By.id("logout_sidebar_link")).click();
-
         // Assert user is redirected to login page after logout
         Assert.assertTrue(webDriver.getCurrentUrl().startsWith("https://www.saucedemo.com/"));
     }
@@ -67,13 +61,11 @@ public class NavigationAndLogoutTest {
         webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
         webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
         webDriver.findElement(By.id("login-button")).click();
-
         Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         //Open the Hamburger menu
         webDriver.findElement(By.id("react-burger-menu-btn")).click();
         Assert.assertTrue(webDriver.findElement(By.cssSelector("[class='bm-menu-wrap']")).isDisplayed(),
                 "Menu option is not visible after clicking the hamburger menu.");
-
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(By.id("inventory_sidebar_link")));
         webDriver.findElement(By.id("inventory_sidebar_link")).click();
@@ -86,13 +78,11 @@ public class NavigationAndLogoutTest {
         webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
         webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
         webDriver.findElement(By.id("login-button")).click();
-
         Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         //Open the Hamburger menu
         webDriver.findElement(By.id("react-burger-menu-btn")).click();
         Assert.assertTrue(webDriver.findElement(By.cssSelector("[class='bm-menu-wrap']")).isDisplayed(),
                 "Menu option is not visible after clicking the hamburger menu.");
-
         WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(By.id("about_sidebar_link")));
         webDriver.findElement(By.id("about_sidebar_link")).click();
