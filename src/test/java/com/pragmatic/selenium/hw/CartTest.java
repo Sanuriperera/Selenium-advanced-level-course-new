@@ -64,4 +64,36 @@ public class CartTest {
             return null;
         }
     }
+
+    @Test
+    public void testContinueShoppingButtonNavigation(){
+        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
+        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
+        webDriver.findElement(By.id("login-button")).click();
+        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+        // Find the Sauce Labs Bike Light
+        webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
+        //Navigate to the cart page
+        webDriver.findElement(By.cssSelector("[data-test='shopping-cart-link']")).click();
+        //Select Continue Shopping button
+        webDriver.findElement(By.id("continue-shopping")).click();
+        // Assert user is redirected to product listing page
+        Assert.assertTrue(webDriver.getCurrentUrl().startsWith("https://www.saucedemo.com/inventory.html"));
+    }
+
+    @Test
+    public void testCheckoutButtonNavigation(){
+        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
+        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
+        webDriver.findElement(By.id("login-button")).click();
+        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+        // Find the Sauce Labs Bike Light
+        webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
+        //Navigate to the cart page
+        webDriver.findElement(By.cssSelector("[data-test='shopping-cart-link']")).click();
+        //Select Continue Shopping button
+        webDriver.findElement(By.id("checkout")).click();
+        // Assert user is redirected to product listing page
+        Assert.assertTrue(webDriver.getCurrentUrl().startsWith("https://www.saucedemo.com/checkout-step-one.html"));
+    }
 }
