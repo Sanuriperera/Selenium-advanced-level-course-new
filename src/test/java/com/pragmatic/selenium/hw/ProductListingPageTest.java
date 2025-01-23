@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -17,20 +18,21 @@ public class ProductListingPageTest {
         webDriver= new ChromeDriver();
         webDriver.manage().window().maximize();
         webDriver.get("https://www.saucedemo.com/");
-    }
-
-//    @AfterMethod
-//    public void closeBrowser(){
-//        webDriver.quit();
-//    }
-
-    @Test
-    public void testAllProductDetails(){
-        //Test Case 2.1: Verify if all products are displayed with the correct name, price, and image.
+        //Log in with valid credentials
         webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
         webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
         webDriver.findElement(By.id("login-button")).click();
         Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+    }
+
+    @AfterMethod
+    public void closeBrowser(){
+        webDriver.quit();
+    }
+
+    @Test
+    public void testAllProductDetails(){
+        //Test Case 2.1: Verify if all products are displayed with the correct name, price, and image.
         // Expected product details (using a 2D array)
         String[][] expectedProducts = {
                 {"Sauce Labs Backpack", "$29.99", "sauce-backpack-1200x1500.0a0b85a3.jpg"},
@@ -63,10 +65,6 @@ public class ProductListingPageTest {
     @Test
     public void testProductDetails(){
         //Test Case 2.3: Verify the product details page when clicking on a product.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Click on Sauce Labs Bolt T-Shirt in the list
         webDriver.findElement(By.id("item_1_title_link")).click();
         // Verify the product name
@@ -91,10 +89,6 @@ public class ProductListingPageTest {
     @Test
     public void testAllProductAddToCartFunctionality(){
 //        Test Case 2.4: Verify the "Add to Cart" button functionality for each product.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Get all products
         List<WebElement> productContainers  = webDriver.findElements(By.cssSelector("[data-test='inventory-item']"));
         int initialCount=0;
@@ -116,10 +110,6 @@ public class ProductListingPageTest {
     @Test
     public void testRemoveButtonFunctionality(){
         //Test Case 2.5: Verify the "Remove" button functionality after adding a product to the cart.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Get the  cart badge count
@@ -150,10 +140,6 @@ public class ProductListingPageTest {
     @Test
     public void testCartCount(){
         //Test Case 2.6: Verify the product count on the cart icon matches the number of added products.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Get the  cart badge count

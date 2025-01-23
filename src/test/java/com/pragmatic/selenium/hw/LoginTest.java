@@ -18,10 +18,10 @@ public class LoginTest {
         webDriver.get("https://www.saucedemo.com/");
     }
 
-//    @AfterMethod
-//    public void closeBrowser(){
-//        webDriver.quit();
-//    }
+    @AfterMethod
+    public void closeBrowser(){
+        webDriver.quit();
+    }
 
     @Test
     public void testLoginWithStandardUserCredentials(){

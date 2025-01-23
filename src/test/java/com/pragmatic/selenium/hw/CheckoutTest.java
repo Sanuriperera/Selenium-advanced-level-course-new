@@ -20,19 +20,21 @@ public class CheckoutTest {
         webDriver= new ChromeDriver();
         webDriver.manage().window().maximize();
         webDriver.get("https://www.saucedemo.com/");
-    }
-
-//    @AfterMethod
-//    public void closeBrowser(){
-//        webDriver.quit();
-//    }
-    @Test(dataProvider="user-information")
-    public void testRequiredFields(String fname,String lname,String postalCode,String expectedMessage){
-        //Test Case 3.1:Verify that the correct products are displayed in the cart after adding them from the product listing page.
+        //Log in with valid credentials
         webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
         webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
         webDriver.findElement(By.id("login-button")).click();
         Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+    }
+
+    @AfterMethod
+    public void closeBrowser(){
+        webDriver.quit();
+    }
+
+    @Test(dataProvider="user-information")
+    public void testRequiredFields(String fname,String lname,String postalCode,String expectedMessage){
+        //Test Case 3.1:Verify that the correct products are displayed in the cart after adding them from the product listing page.
         // Find the Sauce Labs Bike Light and added to the cart
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart
@@ -65,10 +67,6 @@ public class CheckoutTest {
     @Test
     public void testCheckoutWithValidInformation(){
         //Test Case 4.2: Verify entering valid information on the checkout information page allows proceeding to the next step.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light and added to the cart
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart
@@ -94,10 +92,6 @@ public class CheckoutTest {
     @Test
     public void testOrderSummary(){
         //Test Case 4.3: Verify the order summary page displays the correct list of items, prices, and total.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light and added to the cart
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart
@@ -171,10 +165,6 @@ public class CheckoutTest {
     @Test
     public void testFinishButton(){
         //Test Case 4.4: Verify the "Finish" button completes the order and displays the confirmation message.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light and added to the cart
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart
@@ -202,10 +192,6 @@ public class CheckoutTest {
     @Test
     public void testCancelButton(){
         //Test Case 4.5: Verify the "Cancel" button navigates back to the cart page.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light and added to the cart
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart

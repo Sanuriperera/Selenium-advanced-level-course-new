@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -18,19 +19,20 @@ public class CartTest {
         webDriver= new ChromeDriver();
         webDriver.manage().window().maximize();
         webDriver.get("https://www.saucedemo.com/");
-    }
-
-//    @AfterMethod
-//    public void closeBrowser(){
-//        webDriver.quit();
-//    }
-
-    @Test
-    public void testVerifyCartProduct(){
+        //Log in with valid credentials
         webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
         webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
         webDriver.findElement(By.id("login-button")).click();
         Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+    }
+
+    @AfterMethod
+    public void closeBrowser(){
+        webDriver.quit();
+    }
+
+    @Test
+    public void testVerifyCartProduct(){
         // Find the Sauce Labs Bike Light
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         //Navigate to the cart page
@@ -47,10 +49,6 @@ public class CartTest {
     @Test
     public void testCorrectProductsInCart(){
         //Test Case 3.1:Verify that the correct products are displayed in the cart after adding them from the product listing page.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light and added to the cart
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart
@@ -73,10 +71,6 @@ public class CartTest {
     @Test
     public void testRemoveFromCart(){
         //Test Case 3.2: Verify that removing a product from the cart updates the cart count and removes it from the cart page.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light and added to the cart
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart
@@ -101,10 +95,6 @@ public class CartTest {
     @Test
     public void testContinueShoppingButtonNavigation(){
         //Test Case 3.3: Verify the "Continue Shopping" button navigates back to the product listing page.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         //Navigate to the cart page
@@ -118,10 +108,6 @@ public class CartTest {
     @Test
     public void testCheckoutButtonNavigation(){
         //Test Case 3.4: Verify the "Checkout" button navigates to the checkout page.
-        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
-        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
-        webDriver.findElement(By.id("login-button")).click();
-        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
         // Find the Sauce Labs Bike Light
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         //Navigate to the cart page
