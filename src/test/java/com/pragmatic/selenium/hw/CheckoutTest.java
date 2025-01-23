@@ -168,7 +168,26 @@ public class CheckoutTest {
     @Test
     public void testFinishButton(){
         //Test Case 4.4: Verify the "Finish" button completes the order and displays the confirmation message.
+        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
+        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
+        webDriver.findElement(By.id("login-button")).click();
+        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+        // Find the Sauce Labs Bike Light and added to the cart
+        webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
+        // Find the Sauce Labs Bolt T-Shirt and added to the cart
+        webDriver.findElement(By.id("add-to-cart-sauce-labs-bolt-t-shirt")).click();
+        //Navigate to the cart page
+        webDriver.findElement(By.cssSelector("[data-test='shopping-cart-link']")).click();
+        //Select checkout button
+        webDriver.findElement(By.id("checkout")).click();
+        //Select Continue Shopping button
+        webDriver.findElement(By.id("first-name")).sendKeys("Sanuri");
+        webDriver.findElement(By.id("last-name")).sendKeys("Perera");
+        webDriver.findElement(By.id("postal-code")).sendKeys("10400");
+        //Select continue button
+        webDriver.findElement(By.id("continue")).click();
         
+
     }
 
     @Test
