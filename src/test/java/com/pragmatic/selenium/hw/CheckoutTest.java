@@ -144,10 +144,11 @@ public class CheckoutTest {
         String expectedItemTotalPriceStr = String.format("$%.2f", expectedItemTotalPrice);
         // Verify the total price
         Assert.assertEquals(actualItemTotalPrice,expectedItemTotalPriceStr,"Total item price does not match");
-
-        // Get the item total price
+        // Get the item total price from the order page
         WebElement totalPriceElement = webDriver.findElement(By.cssSelector("[data-test='total-label']"));
-        String actualTotalPrice = totalPriceElement.getText().split(": ")[1];
+        String actualTotalPriceWithSign = totalPriceElement.getText().split(": ")[1];
+        // Remove the dollar sign ($) from actual total price
+        String actualTotalPrice = actualTotalPriceWithSign.replace("$", "");
         //Get expected total price
         String expectedItemTotalInText = expectedItemTotalPriceStr.replace("$", "");
         //convert the value to double
@@ -161,8 +162,10 @@ public class CheckoutTest {
         double taxInDouble  = Double.parseDouble(taxInText);
         //Calculate expected total price
         double expectedTotalPrice= expectedItemTotal+taxInDouble;
-//        expectedTotalPrice = Math.round(expectedTotalPrice * 100.0) / 100.0;
-        System.out.println(expectedTotalPrice);
+        // Round the expected total price to two decimal places
+        String expectedTotalPriceNew = String.format("%.2f", expectedTotalPrice).replace("$","");
+        // Verify the total price
+        Assert.assertEquals(actualTotalPrice, expectedTotalPriceNew, "Actual total price does not match expected total price.");
     }
 
     @Test
@@ -186,8 +189,14 @@ public class CheckoutTest {
         webDriver.findElement(By.id("postal-code")).sendKeys("10400");
         //Select continue button
         webDriver.findElement(By.id("continue")).click();
-        
-
+        //Select finished button
+        webDriver.findElement(By.id("finish")).click();
+        // Check the page text in order completed page
+        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test='title']")).getText(),"Checkout: Complete!",
+                "finished button did not proceed to order complete page");
+        // Check the order directed to order completed page
+        String expectedUrl = "https://www.saucedemo.com/checkout-complete.html";
+        Assert.assertEquals(webDriver.getCurrentUrl(), expectedUrl, "finished button did not proceed to order complete page");
     }
 
     @Test
@@ -205,16 +214,10 @@ public class CheckoutTest {
         webDriver.findElement(By.cssSelector("[data-test='shopping-cart-link']")).click();
         //Select checkout button
         webDriver.findElement(By.id("checkout")).click();
-        //Select Continue Shopping button
-        webDriver.findElement(By.id("first-name")).sendKeys("Sanuri");
-        webDriver.findElement(By.id("last-name")).sendKeys("Perera");
-        webDriver.findElement(By.id("postal-code")).sendKeys("10400");
-        //Select continue button
-        webDriver.findElement(By.id("continue")).click();
         //Select cancel button
         webDriver.findElement(By.id("cancel")).click();
-        // Verify that the page has transitioned to the product list page
-        String expectedUrl = "https://www.saucedemo.com/inventory.html";
-        Assert.assertEquals(webDriver.getCurrentUrl(), expectedUrl, "cancel button did not proceed to product list page");
+        // Verify that the page has transitioned to the cart  page
+        String expectedUrl = "https://www.saucedemo.com/cart.html";
+        Assert.assertEquals(webDriver.getCurrentUrl(), expectedUrl, "cancel button did not proceed to cart page");
     }
 }

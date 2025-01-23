@@ -81,11 +81,11 @@ public class ProductListingPageTest {
         //Verify the product price
         String actualPrice = webDriver.findElement(By.cssSelector("[data-test='inventory-item-desc']")).getText();
         String expectedPrice ="$15.99";
-        Assert.assertEquals(actualDescription, expectedDescription, "Product price does not match");
+        Assert.assertEquals(actualPrice, expectedPrice, "Product price does not match");
         //Verify the product price
         String actualImage = webDriver.findElement(By.cssSelector("[data-test='item-sauce-labs-bolt-t-shirt-img']")).getAttribute("src");
         String expectedImage ="https://www.saucedemo.com/static/media/bolt-shirt-1200x1500.c2599ac5.jpg";
-        Assert.assertEquals(actualDescription, expectedDescription, "Product image does not match");
+        Assert.assertEquals(actualImage, expectedImage, "Product image does not match");
     }
 
     @Test
@@ -95,6 +95,69 @@ public class ProductListingPageTest {
         webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
         webDriver.findElement(By.id("login-button")).click();
         Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+        // Get all products
+        List<WebElement> productContainers  = webDriver.findElements(By.cssSelector("[data-test='inventory-item']"));
+        int initialCount=0;
+        for (WebElement product : productContainers) {
+            // Locate the "Add to cart" button within the product container
+            WebElement addToCartButton = product.findElement(By.xpath("//button[@class='btn btn_primary btn_small btn_inventory ']"));
+            // Click the "Add to cart" button
+            addToCartButton.click();
+            // Get the initial cart badge count
+            WebElement cartBadge = webDriver.findElement(By.className("shopping_cart_badge"));
+            int currentCount = Integer.parseInt(cartBadge.getText());
+            // Verify that the cart badge count has increased by 1
+            // Check the product index and verify cart badge count
+            Assert.assertEquals(currentCount, productContainers.indexOf(product) + 1,
+                    "Cart badge count does not match the expected value.");
+        }
+    }
 
+    @Test
+    public void testRemoveButtonFunctionality(){
+        //Test Case 2.5: Verify the "Remove" button functionality after adding a product to the cart.
+        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
+        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
+        webDriver.findElement(By.id("login-button")).click();
+        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+        // Find the Sauce Labs Bike Light
+        webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
+        // Get the  cart badge count
+        String cartCount = webDriver.findElement(By.className("shopping_cart_badge")).getText();
+        Assert.assertEquals(cartCount,"1","Cart badge should show 1 after adding one product.");
+        //Check the remove button
+        String removeBtn= webDriver.findElement(By.cssSelector("[data-test='remove-sauce-labs-bike-light']")).getText();
+        Assert.assertEquals(removeBtn,"Remove");
+        //Select remove button
+        webDriver.findElement(By.cssSelector("[data-test='remove-sauce-labs-bike-light']")).click();
+        //Check the remove button replace with the add to cart button
+        Assert.assertEquals(webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).getText(),"Add to cart");
+        // After removing all products, the cart badge should no longer exist
+        WebElement cartBadge = getCartBadge();
+        Assert.assertNull(cartBadge, "Cart badge should not exist after removing all products.");
+    }
+
+    // Method to get the cart badge element
+    private WebElement getCartBadge() {
+        System.out.println("The cart function");
+        try {
+            return webDriver.findElement(By.cssSelector(".shopping_cart_badge"));
+        } catch (Exception e) {
+            return null; // Return null if the badge does not exist
+        }
+    }
+
+    @Test
+    public void testCartCount(){
+        //Test Case 2.6: Verify the product count on the cart icon matches the number of added products.
+        webDriver.findElement(By.id("user-name")).sendKeys("standard_user");
+        webDriver.findElement(By.id("password")).sendKeys("secret_sauce");
+        webDriver.findElement(By.id("login-button")).click();
+        Assert.assertEquals(webDriver.findElement(By.cssSelector("[data-test ='title']")).getText(),"Products");
+        // Find the Sauce Labs Bike Light
+        webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
+        // Get the  cart badge count
+        String cartCount = webDriver.findElement(By.className("shopping_cart_badge")).getText();
+        Assert.assertEquals(cartCount,"1","Cart badge should show 1 after adding one product.");
     }
 }
