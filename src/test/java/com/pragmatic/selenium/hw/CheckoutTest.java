@@ -34,7 +34,7 @@ public class CheckoutTest {
 
     @Test(dataProvider="user-information")
     public void testRequiredFields(String fname,String lname,String postalCode,String expectedMessage){
-        //Test Case 3.1:Verify that the correct products are displayed in the cart after adding them from the product listing page.
+        //Test Case 4.1: Verify the "First Name," "Last Name," and "Postal Code" fields are required on the checkout information page.
         // Find the Sauce Labs Bike Light and added to the cart
         webDriver.findElement(By.id("add-to-cart-sauce-labs-bike-light")).click();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart
