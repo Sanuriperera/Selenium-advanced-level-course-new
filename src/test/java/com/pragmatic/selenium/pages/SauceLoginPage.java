@@ -10,6 +10,8 @@ public class SauceLoginPage {
     By byPassword =By.id("password");
     By byLoginButton=By.id("login-button");
     By byError=By.cssSelector("h3[data-test ='error']");
+    By byUsernamePlaceholder= By.id("user-name");
+    By byPasswordPlaceholder=By.id("password");
 
     public SauceLoginPage(WebDriver webDriver){
         this.webDriver=webDriver;
@@ -36,4 +38,7 @@ public class SauceLoginPage {
         webDriver.findElement(byUsername).clear();
         return this;
     }
+
+
+
 }

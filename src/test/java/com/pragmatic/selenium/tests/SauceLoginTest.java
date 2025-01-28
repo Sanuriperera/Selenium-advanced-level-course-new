@@ -34,11 +34,12 @@ public class SauceLoginTest {
     }
 
     @Test(dataProvider = "login-credentials",dataProviderClass = DataProviderSourceLab.class,
-            description = "Test Case 1.4: Verify login with empty username and password fields.")
-    public  void testLoginWithBlankCredentials(String username,String password,String expectedError){
+            description = "Test Case 1: Verify login with invalid credentials")
+    public  void testInvalidUserLoginDDTFromClass(String username,String password,String expectedError){
         SauceLoginPage loginPage=new SauceLoginPage(webDriver);
         loginPage.typeUserName(username).typePassword(password).clickLogin();
         Assert.assertEquals(loginPage.getError(),expectedError);
     }
+
 
 }
