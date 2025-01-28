@@ -9,7 +9,7 @@ public class SauceLoginPage {
     By byUsername= By.id("user-name");
     By byPassword =By.id("password");
     By byLoginButton=By.id("login-button");
-    By byError=By.cssSelector("[data-test ='title']");
+    By byError=By.cssSelector("h3[data-test ='error']");
 
     public SauceLoginPage(WebDriver webDriver){
         this.webDriver=webDriver;
@@ -19,7 +19,7 @@ public class SauceLoginPage {
         return this;
     }
 
-    public SauceLoginPage typepasswaord(String password) {
+    public SauceLoginPage typePassword(String password) {
         webDriver.findElement(byPassword).sendKeys(password);
         return this;
     }
