@@ -77,7 +77,7 @@ public class ProductListingPageTest {
                 " 100% ringspun combed cotton, heather gray with red bolt.";
         Assert.assertEquals(actualDescription, expectedDescription, "Product description does not match");
         //Verify the product price
-        String actualPrice = webDriver.findElement(By.cssSelector("[data-test='inventory-item-desc']")).getText();
+        String actualPrice = webDriver.findElement(By.cssSelector("[data-test='inventory-item-price']")).getText();
         String expectedPrice ="$15.99";
         Assert.assertEquals(actualPrice, expectedPrice, "Product price does not match");
         //Verify the product price

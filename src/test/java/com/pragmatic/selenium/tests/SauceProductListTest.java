@@ -1,6 +1,7 @@
 package com.pragmatic.selenium.tests;
 
 import com.pragmatic.selenium.pages.SauceProductListPage;
+import com.pragmatic.selenium.pages.SauceProductPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -38,6 +39,53 @@ public class SauceProductListTest extends BaseClass {
             Assert.assertEquals(actualName,expectedName,"Product name mismatch for " + expectedName);
             Assert.assertEquals(actualPrice,expectedPrice,"Product price mismatch for " + expectedName);
 //            Assert.assertEquals(actualImage,expectedImage,"Product price mismatch for " + expectedName);
+        }
+    }
+
+
+    @Test(description = "Test Case 2.3: Verify the product details page when clicking on a product.")
+    public void testProductDetails(){
+        // Click on Sauce Labs Bolt T-Shirt in the list
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+        productListPage.clickSauceLabsBoltTShirtTitle();
+        // Verify the product name
+        SauceProductPage productPage=new SauceProductPage(webDriver);
+        String actualName = productPage.getName();
+        String expectedTitle = "Sauce Labs Bolt T-Shirt";
+        Assert.assertEquals(actualName, expectedTitle, "Product name does not match");
+        //Verify the product description
+        String actualDescription = productPage.getDescription();
+        String expectedDescription = "Get your testing superhero on with the Sauce Labs bolt T-shirt. From American Apparel," +
+                " 100% ringspun combed cotton, heather gray with red bolt.";
+        Assert.assertEquals(actualDescription, expectedDescription, "Product description does not match");
+        //Verify the product price
+        String actualPrice = productPage.getPrice();
+        String expectedPrice ="$15.99";
+        Assert.assertEquals(actualPrice, expectedPrice, "Product price does not match");
+        //Verify the product image
+        String actualImage = productPage.getImage();
+        String expectedImage ="https://www.saucedemo.com/static/media/bolt-shirt-1200x1500.c2599ac5.jpg";
+        Assert.assertEquals(actualImage, expectedImage, "Product image does not match");
+    }
+
+
+    @Test(description = " Test Case 2.4: Verify the 'Add to Cart' button functionality for each product.")
+    public void testAllProductAddToCartFunctionality(){
+        // Get all products
+        List<WebElement> productContainers  = webDriver.findElements(By.cssSelector("[data-test='inventory-item']"));
+        int initialCount=0;
+        for (WebElement product : productContainers) {
+            // Locate the "Add to cart" button within the product container
+            WebElement addToCartButton = product.findElement(By.xpath("//button[@class='btn btn_primary btn_small btn_inventory ']"));
+            // Click the "Add to cart" button
+            addToCartButton.click();
+            // Get the initial cart badge count
+            WebElement cartBadge = webDriver.findElement(By.className("shopping_cart_badge"));
+            int currentCount = Integer.parseInt(cartBadge.getText());
+            // Verify that the cart badge count has increased by 1
+            // Check the product index and verify cart badge count
+            Assert.assertEquals(currentCount, productContainers.indexOf(product) + 1,
+                    "Cart badge count does not match the expected value.");
         }
     }
 }
