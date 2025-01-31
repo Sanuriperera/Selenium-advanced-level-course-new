@@ -71,21 +71,51 @@ public class SauceProductListTest extends BaseClass {
 
     @Test(description = " Test Case 2.4: Verify the 'Add to Cart' button functionality for each product.")
     public void testAllProductAddToCartFunctionality(){
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
         // Get all products
-        List<WebElement> productContainers  = webDriver.findElements(By.cssSelector("[data-test='inventory-item']"));
+        List<WebElement> productContainers  = productListPage.getAllProducts();
         int initialCount=0;
         for (WebElement product : productContainers) {
             // Locate the "Add to cart" button within the product container
-            WebElement addToCartButton = product.findElement(By.xpath("//button[@class='btn btn_primary btn_small btn_inventory ']"));
-            // Click the "Add to cart" button
-            addToCartButton.click();
+            // And click the "Add to cart" button
+            productListPage.clickAddToCart();
             // Get the initial cart badge count
-            WebElement cartBadge = webDriver.findElement(By.className("shopping_cart_badge"));
-            int currentCount = Integer.parseInt(cartBadge.getText());
+            productListPage.getCartBadgeCount();
+            int currentCount = Integer.parseInt(productListPage.getCartBadgeCount());
             // Verify that the cart badge count has increased by 1
             // Check the product index and verify cart badge count
             Assert.assertEquals(currentCount, productContainers.indexOf(product) + 1,
                     "Cart badge count does not match the expected value.");
         }
+    }
+
+
+    @Test(description = "Test Case 2.5: Verify the Remove button functionality after adding a product to the cart.")
+    public void testRemoveButtonFunctionality(){
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+        productListPage.clickAddToCartSauceLabsBikeLight();
+        // Get the  cart badge count
+        String cartCount=productListPage.getCartBadgeCount();
+        Assert.assertEquals(cartCount,"1","Cart badge should show 1 after adding one product.");
+        //Check the remove button
+        String removeBtn= productListPage.getRemoveBtnText();
+        Assert.assertEquals(removeBtn,"Remove");
+        //Select remove button
+        productListPage.clickRemoveButton();
+        //Check the remove button replace with the add to cart button
+        Assert.assertEquals( productListPage.getSauceLabsBikeLightAddToCartText(),"Add to cart");
+        // After removing all products, the cart badge should no longer exist
+        Assert.assertNull(productListPage.getCartBadge(), "Cart badge should not exist after removing all products.");
+    }
+
+
+    @Test(description = "Test Case 2.6: Verify the product count on the cart icon matches the number of added products.")
+    public void testCartCount(){
+        // Find the Sauce Labs Bike Light
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+        productListPage.clickAddToCartSauceLabsBikeLight();
+        // Get the  cart badge count
+        String cartCount = productListPage.getCartBadgeCount();
+        Assert.assertEquals(cartCount,"1","Cart badge should show 1 after adding one product.");
     }
 }
