@@ -77,26 +77,22 @@ public class SauceCheckoutTest extends BaseClass{
         };
         // Get all product elements
         SauceOverviewPage overviewPage=new SauceOverviewPage(webDriver);
+        // Get the list of products
+        int productCount = overviewPage.getProductCount();
         List<WebElement> productElements = overviewPage.getProducts();
+        Assert.assertEquals(productCount, expectedProducts.length, "Mismatch in number of products");
         // Verify each product details
-        for (int i = 0; i < productElements.size(); i++) {
-            WebElement product = productElements.get(i);
-            // Get actual product details
-            // Get actual product details
-            String actualName = product.findElement(By.className("inventory_item_name")).getText();
-            String actualPrice = product.findElement(By.className("inventory_item_price")).getText();
-//            String actualName =overviewPage.getProductName();
-//            String actualPrice = overviewPage.getPrice();
-            // Get expected values from the 2D array
+        for (int i = 0; i < productCount; i++) {
+            String actualName = overviewPage.getProductName(i);
+            String actualPrice = overviewPage.getProductPrice(i);
             String expectedName = expectedProducts[i][0];
             String expectedPrice = expectedProducts[i][1];
-            // Verify the product name,price,image
-            Assert.assertEquals(actualName,expectedName,"Product name mismatch for " + expectedName);
-            Assert.assertEquals(actualPrice,expectedPrice,"Product price mismatch for " + expectedName);
+            Assert.assertEquals(actualName, expectedName, "Product name mismatch for " + expectedName);
+            Assert.assertEquals(actualPrice, expectedPrice, "Product price mismatch for " + expectedName);
         }
+
         // Get the item total price
-        WebElement totalItemPriceElement = webDriver.findElement(By.cssSelector("[data-test='subtotal-label']"));
-        String actualItemTotalPrice = totalItemPriceElement.getText().split(": ")[1];
+        String actualItemTotalPrice= overviewPage.getActualItemTotalPrice();
         // Calculate the expected total price
         double expectedItemTotalPrice = 0.0;
         for (String[] product : expectedProducts) {
@@ -106,19 +102,13 @@ public class SauceCheckoutTest extends BaseClass{
         // Verify the total price
         Assert.assertEquals(actualItemTotalPrice,expectedItemTotalPriceStr,"Total item price does not match");
         // Get the item total price from the order page
-        WebElement totalPriceElement = webDriver.findElement(By.cssSelector("[data-test='total-label']"));
-        String actualTotalPriceWithSign = totalPriceElement.getText().split(": ")[1];
-        // Remove the dollar sign ($) from actual total price
-        String actualTotalPrice = actualTotalPriceWithSign.replace("$", "");
+        String actualTotalPrice = overviewPage.getActualTotalPriceWithSign();
         //Get expected total price
         String expectedItemTotalInText = expectedItemTotalPriceStr.replace("$", "");
         //convert the value to double
         double expectedItemTotal  = Double.parseDouble(expectedItemTotalInText);
         //Get Tax
-        WebElement taxText = webDriver.findElement(By.cssSelector("[data-test='tax-label']"));
-        String tax = taxText.getText().split(": ")[1];
-        // Remove the dollar sign ($) from item tax before conversion
-        String taxInText = tax.replace("$", "");
+        String taxInText = overviewPage.getTaxInText();
         //convert the tax value to double
         double taxInDouble  = Double.parseDouble(taxInText);
         //Calculate expected total price
@@ -128,7 +118,6 @@ public class SauceCheckoutTest extends BaseClass{
         // Verify the total price
         Assert.assertEquals(actualTotalPrice, expectedTotalPriceNew, "Actual total price does not match expected total price.");
     }
-
 
 
     @Test(description = "Test Case 4.4: Verify the Finish button completes the order and displays the confirmation message.")

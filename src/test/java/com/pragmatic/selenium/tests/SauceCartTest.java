@@ -1,6 +1,7 @@
 package com.pragmatic.selenium.tests;
 
 import com.pragmatic.selenium.pages.SauceCartPage;
+import com.pragmatic.selenium.pages.SauceProductListPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -10,26 +11,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SauceCartTest extends BaseClass{
+
+
     @Test(description = "Verify that the correct product are displayed in the cart after adding them")
     public void testVerifyCartProduct(){
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+        productListPage.clickAddToCartSauceLabsBikeLight();
+        productListPage.clickCartIcon();
         SauceCartPage sauceCartPage=new SauceCartPage(webDriver);
-        sauceCartPage.clickAddToCartSauceLabsBikeLight();
-        sauceCartPage.clickCartIcon();
         Assert.assertEquals(sauceCartPage.getSauceLabsBikeLightTitle(),"Sauce Labs Bike Light");
         String expectedDes="A red light isn't the desired state in testing but it sure helps when riding your bike at night." +
                 " Water-resistant with 3 lighting modes, 1 AAA battery included.";
         Assert.assertEquals(sauceCartPage.getSauceLabsBikeLightDescription(),expectedDes);
     }
 
+
     @Test(description = "Test Case 3.1:Verify that the correct products are displayed in the cart after adding them from the product listing page.")
     public void testCorrectProductsInCart(){
-        SauceCartPage sauceCartPage=new SauceCartPage(webDriver);
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
         // Find the Sauce Labs Bike Light and added to the cart
-        sauceCartPage.clickAddToCartSauceLabsBikeLight();
+        productListPage.clickAddToCartSauceLabsBikeLight();
         // Find the Sauce Labs Bolt T-Shirt and added to the cart
-        sauceCartPage.clickAddToCartSauceLabsBoltTShirt();
+        productListPage.clickAddToCartSauceLabsBoltTShirt();
         //Navigate to the cart page
-        sauceCartPage.clickCartIcon();
+        productListPage.clickCartIcon();
+        SauceCartPage sauceCartPage=new SauceCartPage(webDriver);
         // Get the list of product names in the cart
         List<WebElement> cartItems=sauceCartPage.getCartItems();
         // Expected product names
@@ -43,12 +49,16 @@ public class SauceCartTest extends BaseClass{
         }
     }
 
+
     @Test(description = "Test Case 3.2: Verify that removing a product from the cart updates the cart count and removes it from the cart page.")
     public void testRemoveFromCart(){
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+        // Find the Sauce Labs Bike Light and added to the cart
+        productListPage.clickAddToCartSauceLabsBikeLight();
+        // Find the Sauce Labs Bolt T-Shirt and added to the cart
+        productListPage.clickAddToCartSauceLabsBoltTShirt();
+        productListPage.clickCartIcon();
         SauceCartPage sauceCartPage=new SauceCartPage(webDriver);
-        sauceCartPage.clickAddToCartSauceLabsBikeLight();
-        sauceCartPage.clickAddToCartSauceLabsBoltTShirt();
-        sauceCartPage.clickCartIcon();
         int initialCartCount = Integer.parseInt(sauceCartPage.getInitialCartCountText());
         // Remove the "Sauce Labs Bike Light"
         sauceCartPage.clickBikeLightRemovalButton();
@@ -60,13 +70,12 @@ public class SauceCartTest extends BaseClass{
         Assert.assertFalse(cartItems.contains("Sauce Labs Bike Light"), "Removed product is still present in the cart");
     }
 
+
     @Test(description = "Test Case 3.3: Verify the Continue Shopping button navigates back to the product listing page.")
     public void testContinueShoppingButtonNavigation(){
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+        productListPage.clickAddToCartSauceLabsBikeLight();
         SauceCartPage sauceCartPage=new SauceCartPage(webDriver);
-        // Find the Sauce Labs Bike Light
-        sauceCartPage.clickAddToCartSauceLabsBikeLight();
-        //Navigate to the cart page
-        sauceCartPage.clickCartIcon();
         //Select Continue Shopping button
         sauceCartPage.clickContinueShoppingButton();
         // Assert user is redirected to product listing page
@@ -74,13 +83,13 @@ public class SauceCartTest extends BaseClass{
         Assert.assertTrue(webDriver.getCurrentUrl().startsWith(expectedUrl),"The page is mismatch");
     }
 
+
     @Test(description = "Test Case 3.4: Verify the Checkout button navigates to the checkout page.")
     public void testCheckoutButtonNavigation(){
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+        productListPage.clickAddToCartSauceLabsBikeLight();
+        productListPage.clickCartIcon();
         SauceCartPage sauceCartPage=new SauceCartPage(webDriver);
-        // Find the Sauce Labs Bike Light
-        sauceCartPage.clickAddToCartSauceLabsBikeLight();
-        //Navigate to the cart page
-        sauceCartPage.clickCartIcon();
         //Select Continue Shopping button
         sauceCartPage.clickCheckoutBtn();
         // Assert user is redirected to product listing page

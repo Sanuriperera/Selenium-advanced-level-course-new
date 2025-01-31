@@ -2,6 +2,8 @@ package com.pragmatic.selenium.tests;
 
 import com.pragmatic.selenium.DataProviderSourceLab;
 import com.pragmatic.selenium.pages.SauceLoginPage;
+import com.pragmatic.selenium.pages.SauceProductListPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
@@ -31,6 +33,8 @@ public class SauceLoginTest {
     public void testLoginWithValidUserCredentials(){
         SauceLoginPage loginPage=new SauceLoginPage(webDriver);
         loginPage.typeUserName("standard_user").typePassword("secret_sauce").clickLogin();
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+        Assert.assertEquals(productListPage.getProductText(),"Products");
     }
 
     @Test(dataProvider = "login-credentials",dataProviderClass = DataProviderSourceLab.class,
@@ -41,5 +45,14 @@ public class SauceLoginTest {
         Assert.assertEquals(loginPage.getError(),expectedError);
     }
 
+
+    @Test(description = "Test Case 1.7: Verify if the `Username` and `Password` fields display placeholders properly.")
+    public void testPlaceholderVerification(){
+        SauceLoginPage loginPage=new SauceLoginPage(webDriver);
+        Assert.assertEquals(loginPage.getUsernamePlaceholder(),"Username",
+                "Username placeholder does not match");
+        Assert.assertEquals(loginPage.getPasswordPlaceholder(),"Password",
+                "Password placeholder does not match");
+    }
 
 }

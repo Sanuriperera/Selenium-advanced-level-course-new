@@ -8,6 +8,7 @@ import java.util.List;
 
 public class SauceProductListPage {
     private final WebDriver webDriver;
+    By byProductPageText=By.cssSelector("[data-test ='title']");
     By bySauceLabsBikeLightBtn= By.id("add-to-cart-sauce-labs-bike-light");
     By bySauceLabsBoltTShirtBtn=By.id("add-to-cart-sauce-labs-bolt-t-shirt");
     By byCartIcon = By.cssSelector("[data-test='shopping-cart-link']");
@@ -67,5 +68,9 @@ public class SauceProductListPage {
         } catch (Exception e) {
             return null; // Return null if the badge does not exist
         }
+    }
+
+    public String  getProductText() {
+        return webDriver.findElement(byProductPageText).getText();
     }
 }

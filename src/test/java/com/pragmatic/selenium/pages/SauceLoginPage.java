@@ -39,6 +39,11 @@ public class SauceLoginPage {
         return this;
     }
 
+    public String getUsernamePlaceholder() {
+       return webDriver.findElement(byUsernamePlaceholder).getAttribute("placeholder");
+    }
 
-
+    public String getPasswordPlaceholder() {
+        return webDriver.findElement(byPasswordPlaceholder).getAttribute("placeholder");
+    }
 }
