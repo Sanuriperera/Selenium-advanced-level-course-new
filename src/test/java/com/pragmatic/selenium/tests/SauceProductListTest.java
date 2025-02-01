@@ -2,7 +2,6 @@ package com.pragmatic.selenium.tests;
 
 import com.pragmatic.selenium.pages.SauceProductListPage;
 import com.pragmatic.selenium.pages.SauceProductPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,6 +9,8 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 public class SauceProductListTest extends BaseClass {
+
+
     @Test(description = "Test Case 2.1: Verify if all products are displayed with the correct name, price, and image.")
     public void testAllProductDetails(){
         // Expected product details (using a 2D array)
@@ -23,22 +24,18 @@ public class SauceProductListTest extends BaseClass {
         };
         SauceProductListPage productListPage=new SauceProductListPage(webDriver);
         // Get all product elements
-        List<WebElement> productElements =productListPage.getAllProducts();
-        // Verify each product details
-        for (int i = 0; i < productElements.size(); i++) {
-            WebElement product = productElements.get(i);
-            // Get actual product details
-            String actualName = product.findElement(By.className("inventory_item_name")).getText();
-            String actualPrice = product.findElement(By.className("inventory_item_price")).getText();
-//            String actualImage = product.findElement(By.xpath("//div[@class= 'inventory_item_img']/a/img")).getDomProperty("src");
-            // Get expected values from the 2D array
+        List<String[]> actualProducts = productListPage.getAllProductDetails();
+        // Validate product count
+        Assert.assertEquals(actualProducts.size(), expectedProducts.length, "Product count mismatch!");
+        for (int i = 0; i < actualProducts.size(); i++) {
+            String[] actualProduct = actualProducts.get(i);
             String expectedName = expectedProducts[i][0];
             String expectedPrice = expectedProducts[i][1];
-//            String expectedImage = expectedProducts[i][2];
-            // Verify the product name,price,image
-            Assert.assertEquals(actualName,expectedName,"Product name mismatch for " + expectedName);
-            Assert.assertEquals(actualPrice,expectedPrice,"Product price mismatch for " + expectedName);
-//            Assert.assertEquals(actualImage,expectedImage,"Product price mismatch for " + expectedName);
+            String expectedImage = expectedProducts[i][2];
+
+            Assert.assertEquals(actualProduct[0], expectedName, "Product name mismatch for " + expectedName);
+            Assert.assertEquals(actualProduct[1], expectedPrice, "Product price mismatch for " + expectedName);
+            Assert.assertTrue(actualProduct[2].contains(expectedImage), "Product image mismatch for " + expectedName);
         }
     }
 

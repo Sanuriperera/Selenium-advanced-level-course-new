@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SauceProductListPage {
@@ -17,6 +18,9 @@ public class SauceProductListPage {
     By byAddToCartBtn =By.xpath("//button[@class='btn btn_primary btn_small btn_inventory ']");
     By byCartBadge=By.className("shopping_cart_badge");
     By bySauceLabsBikeLightRemoveBtn = By.cssSelector("[data-test='remove-sauce-labs-bike-light']");
+    By byItemName=By.className("inventory_item_name");
+    By byItemPrice=By.className("inventory_item_price");
+    By byItemImage=By.xpath(".//div[@class= 'inventory_item_img']/a/img");
 
     public SauceProductListPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -64,7 +68,7 @@ public class SauceProductListPage {
 
     public WebElement  getCartBadge() {
         try {
-            return webDriver.findElement(By.cssSelector(".shopping_cart_badge"));
+            return webDriver.findElement(byCartBadge);
         } catch (Exception e) {
             return null; // Return null if the badge does not exist
         }
@@ -72,5 +76,19 @@ public class SauceProductListPage {
 
     public String  getProductText() {
         return webDriver.findElement(byProductPageText).getText();
+    }
+
+    public List<String[]> getAllProductDetails() {
+        List<WebElement> productElements = getAllProducts();
+        List<String[]> productDetails = new ArrayList<>();
+
+        for (WebElement product : productElements) {
+            String name = product.findElement(byItemName).getText();
+            String price = product.findElement(byItemPrice).getText();
+            String imageSrc = product.findElement(byItemImage).getAttribute("src");
+
+            productDetails.add(new String[]{name, price, imageSrc});
+        }
+        return productDetails;
     }
 }
