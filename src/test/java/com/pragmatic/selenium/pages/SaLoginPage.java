@@ -19,6 +19,7 @@ public class SaLoginPage {
     @FindBy(xpath = "//h3[@data-test ='error']")
     WebElement errMessage;
 
+
     private WebDriver webDriver;
 
     public SaLoginPage(WebDriver webDriver) {
@@ -42,5 +43,13 @@ public class SaLoginPage {
 
     public String getError() {
         return errMessage.getText();
+    }
+
+    public String getUsernamePlaceholder() {
+        return txtUserName.getAttribute("placeholder");
+    }
+
+    public String getPasswordPlaceholder() {
+        return txtPassword.getAttribute("placeholder");
     }
 }

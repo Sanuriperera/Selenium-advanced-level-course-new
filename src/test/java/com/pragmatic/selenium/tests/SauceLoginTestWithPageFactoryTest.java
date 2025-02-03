@@ -51,4 +51,14 @@ public class SauceLoginTestWithPageFactoryTest {
         loginPage.typeUserName(username).typePassword(password).clickLogin();
         Assert.assertEquals(loginPage.getError(),expectedError);
     }
+
+
+    @Test(description = "Test Case 1.7: Verify if the `Username` and `Password` fields display placeholders properly.")
+    public void testPlaceholderVerification(){
+        SaLoginPage loginPage=new SaLoginPage(webDriver);
+        Assert.assertEquals(loginPage.getUsernamePlaceholder(),"Username",
+                "Username placeholder does not match");
+        Assert.assertEquals(loginPage.getPasswordPlaceholder(),"Password",
+                "Password placeholder does not match");
+    }
 }
