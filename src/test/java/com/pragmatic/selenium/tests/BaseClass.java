@@ -21,10 +21,10 @@ public class BaseClass {
     }
 
 
-//    @AfterMethod
-//    public void closeBrowser(){
-//        webDriver.quit();
-//    }
+    @AfterMethod
+    public void closeBrowser(){
+        webDriver.quit();
+    }
 
 
     public void testLoginWithStandardUserCredentials(){
