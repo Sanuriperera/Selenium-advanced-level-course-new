@@ -26,8 +26,6 @@ public class SauceNavigationMenuTest extends BaseClass {
         //Open the Hamburger menu
         SauceNavigationMenuPage navigationMenuPage= new SauceNavigationMenuPage(webDriver);
         navigationMenuPage.clickMenu();
-        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(navigationMenuPage.getLogoutLink()));
         //Select logout
         navigationMenuPage.clickLogout();
         // Assert user is redirected to login page after logout
@@ -41,8 +39,6 @@ public class SauceNavigationMenuTest extends BaseClass {
         SauceNavigationMenuPage navigationMenuPage=new SauceNavigationMenuPage(webDriver);
         //Open the Hamburger menu
         navigationMenuPage.clickMenu();
-        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(navigationMenuPage.getAllItemsLink()));
         navigationMenuPage.clickAllItemsLink();
         String expectedUrl= "https://www.saucedemo.com/inventory.html";
         Assert.assertTrue(webDriver.getCurrentUrl().startsWith(expectedUrl),
@@ -55,8 +51,6 @@ public class SauceNavigationMenuTest extends BaseClass {
         SauceNavigationMenuPage navigationMenuPage=new SauceNavigationMenuPage(webDriver);
         //Open the Hamburger menu
         navigationMenuPage.clickMenu();
-        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(navigationMenuPage.getAboutLink()));
         navigationMenuPage.clickAbout();
         Assert.assertTrue(webDriver.getCurrentUrl().startsWith("https://saucelabs.com/"),
                 "About link does not redirect to the correct URL");

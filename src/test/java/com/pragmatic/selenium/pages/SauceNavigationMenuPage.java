@@ -3,6 +3,10 @@ package com.pragmatic.selenium.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class SauceNavigationMenuPage {
 
@@ -26,27 +30,24 @@ public class SauceNavigationMenuPage {
         return webDriver.findElement(byHamburgerMenu);
     }
 
-    public WebElement getLogoutLink() {
-        return webDriver.findElement(byLogoutLink);
-    }
 
     public void clickLogout() {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(byLogoutLink));
         webDriver.findElement(byLogoutLink).click();
     }
 
-    public WebElement getAllItemsLink(){
-       return webDriver.findElement(byAllItemsLink);
-    }
 
     public void clickAllItemsLink() {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(byAllItemsLink));
         webDriver.findElement(byAllItemsLink).click();
     }
 
-    public WebElement getAboutLink() {
-        return webDriver.findElement(byAboutLink);
-    }
 
     public void clickAbout() {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(byAboutLink));
         webDriver.findElement(byAboutLink).click();
     }
 }

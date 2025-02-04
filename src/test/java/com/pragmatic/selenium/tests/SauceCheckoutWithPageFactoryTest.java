@@ -2,8 +2,11 @@ package com.pragmatic.selenium.tests;
 
 import com.pragmatic.selenium.DataProviderSourceLab;
 import com.pragmatic.selenium.pages.*;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 public class SauceCheckoutWithPageFactoryTest extends BaseClass{
 
@@ -48,6 +51,69 @@ public class SauceCheckoutWithPageFactoryTest extends BaseClass{
         SaOverviewPage overviewPage=new SaOverviewPage(webDriver);
         String errorMessage=overviewPage.getTitleText();
         Assert.assertEquals(errorMessage,"Checkout: Overview", "Expected 'Checkout: Overview' text not found");
+    }
+
+
+    @Test(description = "Test Case 4.3: Verify the order summary page displays the correct list of items, prices, and total.")
+    public void testOrderSummary(){
+        SaProductListPage productListPage=new SaProductListPage(webDriver);
+        productListPage.clickAddToCartSauceLabsBikeLight();
+        productListPage.clickAddToCartSauceLabsBoltTShirt();
+        //Navigate to the cart page
+        productListPage.clickCartIcon();
+        SaCartPage cartPage=new SaCartPage(webDriver);
+        //Select checkout button
+        cartPage.clickCheckoutBtn();
+        //Enter details in checkout
+        SaCheckoutPage checkoutPage=new SaCheckoutPage(webDriver);
+        checkoutPage.typeFirstName("sanuri").typeLastName("perera").typePostalCode("10400").clickContinue();
+        // Get the expected list of items
+        // Expected product details (using a 2D array)
+        String[][] expectedProducts = {
+                {"Sauce Labs Bike Light", "$9.99"},
+                {"Sauce Labs Bolt T-Shirt", "$15.99"},
+        };
+        // Get all product elements
+        SaOverviewPage overviewPage=new SaOverviewPage(webDriver);
+        // Get the list of products
+        int productCount = overviewPage.getProductCount();
+        List<WebElement> productElements = overviewPage.getProducts();
+        Assert.assertEquals(productCount, expectedProducts.length, "Mismatch in number of products");
+        // Verify each product details
+        for (int i = 0; i < productCount; i++) {
+            String actualName = overviewPage.getProductName(i);
+            String actualPrice = overviewPage.getProductPrice(i);
+            String expectedName = expectedProducts[i][0];
+            String expectedPrice = expectedProducts[i][1];
+            Assert.assertEquals(actualName, expectedName, "Product name mismatch for " + expectedName);
+            Assert.assertEquals(actualPrice, expectedPrice, "Product price mismatch for " + expectedName);
+        }
+
+        // Get the item total price
+        String actualItemTotalPrice= overviewPage.getActualItemTotalPrice();
+        // Calculate the expected total price
+        double expectedItemTotalPrice = 0.0;
+        for (String[] product : expectedProducts) {
+            expectedItemTotalPrice += Double.parseDouble(product[1].replace("$", ""));
+        }
+        String expectedItemTotalPriceStr = String.format("$%.2f", expectedItemTotalPrice);
+        // Verify the total price
+        Assert.assertEquals(actualItemTotalPrice,expectedItemTotalPriceStr,"Total item price does not match");
+
+        // Get the item total price from the order page
+        String actualTotalPrice = overviewPage.getActualTotalPriceWithSign();
+        //Get expected total price
+        String expectedItemTotalInText = expectedItemTotalPriceStr.replace("$", "");
+        //convert the value to double
+        double expectedItemTotal  = Double.parseDouble(expectedItemTotalInText);
+        //Get converted tax value in double
+        double taxInDouble  = overviewPage.getTaxInDouble();
+        //Calculate expected total price
+        double expectedTotalPrice= expectedItemTotal+taxInDouble;
+        // Round the expected total price to two decimal places
+        String expectedTotalPriceNew = String.format("%.2f", expectedTotalPrice).replace("$","");
+        // Verify the total price
+        Assert.assertEquals(actualTotalPrice, expectedTotalPriceNew, "Actual total price does not match expected total price.");
     }
 
     @Test(description = "Test Case 4.4: Verify the Finish button completes the order and displays the confirmation message.")

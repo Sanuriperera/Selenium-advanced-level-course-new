@@ -87,6 +87,7 @@ public class SaProductListPage {
         try {
             return CartBadge;
         } catch (Exception e) {
+            System.out.println("null");
             return null; // Return null if the badge does not exist
         }
     }
