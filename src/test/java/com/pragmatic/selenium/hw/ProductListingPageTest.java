@@ -146,4 +146,6 @@ public class ProductListingPageTest {
         String cartCount = webDriver.findElement(By.className("shopping_cart_badge")).getText();
         Assert.assertEquals(cartCount,"1","Cart badge should show 1 after adding one product.");
     }
+
+
 }

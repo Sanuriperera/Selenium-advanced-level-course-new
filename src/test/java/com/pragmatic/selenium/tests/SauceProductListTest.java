@@ -1,7 +1,9 @@
 package com.pragmatic.selenium.tests;
 
+import com.pragmatic.selenium.DataProviderSourceLab;
 import com.pragmatic.selenium.pages.SauceProductListPage;
 import com.pragmatic.selenium.pages.SauceProductPage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -115,4 +117,55 @@ public class SauceProductListTest extends BaseClass {
         String cartCount = productListPage.getCartBadgeCount();
         Assert.assertEquals(cartCount,"1","Cart badge should show 1 after adding one product.");
     }
+
+    @Test
+    public void testStreamForEachExample(){
+        List<WebElement> inventoryList = webDriver.findElements(By.cssSelector("[data-test='inventory-item']"));
+        inventoryList.stream().forEach(webElement -> webElement.findElement(By.tagName("button")).click());
+        SauceProductListPage productListPage=new SauceProductListPage(webDriver);
+//        System.out.println(productListPage.getCartBadgeCount());
+//        Assert.assertEquals(productListPage.getCartBadgeCount(),6);
+    }
+
+    @Test
+    public void testFilterExample(){
+        List<WebElement> inventoryList = webDriver.findElements(By.cssSelector("[data-test='inventory-item']"));
+        long productsStartsWithSauce=inventoryList.stream().filter(webElement -> webElement.findElement(
+                By.cssSelector("[data-test='inventory-item-name']"))
+                .getText().startsWith("Sauce")).count();
+
+        Assert.assertEquals(productsStartsWithSauce,5);
+
+    }
+
+    @Test(dataProviderClass = DataProviderSourceLab.class,dataProvider="productData")
+    public void testAllProducts(String expectedProductName,String expectedPrice,String expectedImage){
+        // Expected product details (using a 2D array)
+
+        List<WebElement> inventoryList = webDriver.findElements(By.cssSelector("[data-test='inventory-item']"));
+        long productCountWithGivenPriceAndName=inventoryList.stream()
+                .filter(webElement -> isProductExist(expectedProductName, webElement))
+                .filter(webElement -> isPriceMatch(expectedPrice, webElement)).count();
+        Assert.assertEquals(productCountWithGivenPriceAndName,1,"Product price does not match");
+    }
+
+    private static boolean isPriceMatch(String expectedPrice, WebElement webElement) {
+        return webElement.findElement(By.cssSelector("[data-test='inventory-item-price']"))
+                .getText().equals(expectedPrice);
+    }
+
+    private static boolean isProductExist(String expectedProductName, WebElement webElement) {
+        return webElement.findElement(By.cssSelector("[data-test='inventory-item-name']"))
+                .getText().equals(expectedProductName);
+    }
+
+//    @Test
+//    public void testStreamDisplayDetailsOfEachItem(){
+//        List<WebElement> inventoryList = webDriver.findElements(By.cssSelector("[data-test='inventory-item']"));
+//        inventoryList.stream().filter(webElement -> webElement.findElement(
+//                        By.cssSelector("[data-test='inventory-item-name']"))
+//                .getText().startsWith("Sauce")).count();
+//
+//
+//    }
 }
